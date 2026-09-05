@@ -45,7 +45,7 @@ object HelmTemplateTest : ExecutionResultAwareSpek({
                     expectArg("awesome-release")
                     expectArg("custom/awesome")
                     expectOption("--version", "3.14.5")
-                    expectOption("--output-dir", "${project.buildDir}/template-output")
+                    expectOption("--output-dir", "${project.layout.buildDirectory.get().asFile}/template-output")
                 }
             }
         }

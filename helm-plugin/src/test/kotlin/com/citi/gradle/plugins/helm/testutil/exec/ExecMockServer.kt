@@ -41,11 +41,16 @@ private class DefaultExecMockServer : ExecMockServer, AutoCloseable {
         override fun getShellScript(): String =
             """
             |#!/bin/bash 
+            |if command -v python3 >/dev/null 2>&1; then
+            |    ENV_JSON=${'$'}(python3 -c "import os, json; print(json.dumps(dict(os.environ)))")
+            |else
+            |    ENV_JSON="{$(env | grep -E '^[A-Za-z0-9_]+=[^"\\{}]*$' | awk -F '=' '{print "\"" $1 "\":\"" $2 "\""}' | paste -sd',' -)}"
+            |fi
             |PAYLOAD="{\
             |\"executable\":\"$0\",\
             |\"mockId\": \"$id\",\
             |\"args\":[$(for arg in "$@"; do echo "\"$(echo ${'$'}arg | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g')\""; done | paste -sd ',' -)],\
-            |\"env\":{$(env | awk -F '=' '{print "\"" $1 "\":\"" $2 "\""}' | paste -sd',' -)}}"
+            |\"env\":${'$'}ENV_JSON}"
             |
             |exec curl -fqs http://localhost:${portNumber} --data-ascii "${'$'}PAYLOAD"
             """.trimMargin()

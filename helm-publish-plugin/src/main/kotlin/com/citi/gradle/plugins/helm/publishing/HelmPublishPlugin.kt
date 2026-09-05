@@ -3,7 +3,6 @@ package com.citi.gradle.plugins.helm.publishing
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.internal.HasConvention
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.tasks.TaskDependency
 import org.gradle.internal.reflect.Instantiator
@@ -76,8 +75,11 @@ class HelmPublishPlugin
      * @see HelmChartPublishConvention
      */
     private fun addChartPublishConvention(chart: HelmChart, project: Project) {
-        (chart as HasConvention).convention.plugins[HELM_CHART_PUBLISHING_CONVENTION_NAME] =
+        (chart as ExtensionAware).extensions.add(
+            HelmChartPublishConvention::class.java,
+            HELM_CHART_PUBLISHING_CONVENTION_NAME,
             project.objects.createHelmChartPublishConvention()
+        )
     }
 
 

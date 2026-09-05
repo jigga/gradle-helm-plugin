@@ -3,8 +3,10 @@ package com.citi.gradle.plugins.helm.command
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.UUID
+import javax.inject.Inject
 import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.process.ExecOperations
 import org.gradle.process.ExecSpec
 import org.gradle.workers.WorkerExecutor
 import org.slf4j.LoggerFactory
@@ -86,6 +88,11 @@ internal class HelmExecProviderSupport(
     private val logger = LoggerFactory.getLogger(javaClass)
 
 
+    private val execOperations: ExecOperations by lazy {
+        project.objects.newInstance(ExecOperationsHolder::class.java).execOperations
+    }
+
+
     override fun execHelm(command: String, subcommand: String?, action: Action<HelmExecSpec>?) {
         if (shouldExecInWorker()) {
             execHelmInWorker(command, subcommand, action)
@@ -109,7 +116,7 @@ internal class HelmExecProviderSupport(
         if (shouldExecInWorker()) {
             // Use a unique ID for this invocation, to name our stdout/stderr capture files
             val uniqueId = UUID.randomUUID().toString()
-            val stdoutFile = project.buildDir.resolve("tmp/helm/$uniqueId.out")
+            val stdoutFile = project.layout.buildDirectory.file("tmp/helm/$uniqueId.out").get().asFile
 
             try {
                 execHelmInWorker(command, subcommand, action, stdoutFile)
@@ -134,7 +141,7 @@ internal class HelmExecProviderSupport(
     private fun execHelmSync(
         command: String, subcommand: String?,
         action: Action<HelmExecSpec>?, withExecSpec: (ExecSpec.() -> Unit)? = null
-    ) = project.exec { execSpec ->
+    ) = execOperations.exec { execSpec ->
 
         val helmExecSpec = DefaultHelmExecSpec(execSpec, command, subcommand)
         withExecSpec?.invoke(execSpec)
@@ -243,3 +250,9 @@ internal fun maskCommandLine(commandLine: List<String>): List<String> =
 
 private fun shouldMaskOptionValue(arg: String) =
     arg.startsWith("--") && arg.contains("password")
+
+
+internal interface ExecOperationsHolder {
+    @get:Inject
+    val execOperations: ExecOperations
+}

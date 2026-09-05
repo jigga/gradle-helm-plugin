@@ -38,7 +38,7 @@ subprojects {
 
 
     plugins.withId("org.jetbrains.kotlin.jvm") {
-        configurations.all {
+        configurations.matching { !it.name.startsWith("detekt") }.all {
             resolutionStrategy.eachDependency {
                 if (requested.group == "org.jetbrains.kotlin") {
                     useVersion(libs.versions.kotlin.get())
@@ -54,10 +54,11 @@ subprojects {
             "testImplementation"(libs.mockk)
             "testImplementation"(libs.spekDsl)
             "testRuntimeOnly"(libs.spekRunner)
+            "testRuntimeOnly"(libs.junitPlatformLauncher)
         }
 
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            kotlinOptions.jvmTarget = "1.8"
+            compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
         }
 
         tasks.withType<JavaCompile> {
@@ -81,7 +82,7 @@ subprojects {
             if (maxParallelForks > 1) {
                 // Parallel tests seem to need a little more time to set up, so increase the test timeout to
                 // make sure that the first test in a forked process doesn't fail because of this
-                systemProperty("SPEK_TIMEOUT", 30000)
+                systemProperty("spek2.execution.test.timeout", 30000)
             }
         }
     }
