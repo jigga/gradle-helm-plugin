@@ -11,7 +11,7 @@ project.
 
 The project uses [Dokka](https://github.com/Kotlin/dokka) for documentation generation (analogue of Javadoc on Kotlin
 world). This process might take some time, however if you'd like to disable it please specify the following property in
-your user `gradle.properties` file: `com.citi.gradle.helm.plugin.dokka.disabled=true`.
+your user `gradle.properties` file: `io.github.jigga.gradle.helm.plugin.dokka.disabled=true`.
 
 # Tests
 
@@ -27,7 +27,7 @@ Project has tests, based on two frameworks:
 
 Both frameworks use JUnit test runner, therefore `./gradlew test` covers all unit tests.
 
-See also [#6](https://github.com/Citi/gradle-helm-plugin/issues/6)
+See also [#6](https://github.com/jigga/gradle-helm-plugin/issues/6)
 
 ## Functional tests
 
@@ -38,7 +38,7 @@ inherit classpath from plugin, which might be risky for functional tests.
 Therefore, tests covering entire plugin (plus potential different gradle versions verification) are separated to
 different source set and to different task. Please run `./gradlew functionalTest` task for that purpose.
 
-Functional tests download distribution archives from `https://services.gradle.org/distributions`. If you'd like to use another web server (for example, corporate artifacts provider) - please configure gradle property `com.citi.gradle.helm.plugin.distribution.url.prefix` in `~/.gradle/gradle.properties`
+Functional tests download distribution archives from `https://services.gradle.org/distributions`. If you'd like to use another web server (for example, corporate artifacts provider) - please configure gradle property `io.github.jigga.gradle.helm.plugin.distribution.url.prefix` in `~/.gradle/gradle.properties`
 
 ### Helm executable replacement
 

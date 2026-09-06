@@ -38,9 +38,9 @@ gradlePlugin {
     testSourceSets(functionalTest)
     plugins {
         create("helmPublishPlugin") {
-            id = "com.citi.helm-publish"
+            id = "io.github.jigga.helm-publish"
             displayName = "Helm Publish"
-            implementationClass = "com.citi.gradle.plugins.helm.publishing.HelmPublishPlugin"
+            implementationClass = "io.github.jigga.gradle.plugins.helm.publishing.HelmPublishPlugin"
             description = "Extension for Gradle Helm Plugin. Allows helm chart publishing. Helm doesn't have this feature, so different publications are used for different helm repository providers"
             tags.addAll("helm", "publish")
         }
@@ -48,7 +48,7 @@ gradlePlugin {
 }
 
 apiValidation {
-    ignoredPackages.add("com.citi.gradle.plugins.helm.publishing.dsl.internal")
+    ignoredPackages.add("io.github.jigga.gradle.plugins.helm.publishing.dsl.internal")
 }
 
 val functionalTestTask = tasks.register<Test>("functionalTest") {
@@ -58,7 +58,7 @@ val functionalTestTask = tasks.register<Test>("functionalTest") {
     classpath = functionalTest.runtimeClasspath
     mustRunAfter(tasks.test)
 
-    val urlOverrideProperty = "com.citi.gradle.helm.plugin.distribution.url.prefix"
+    val urlOverrideProperty = "io.github.jigga.gradle.helm.plugin.distribution.url.prefix"
     findProperty(urlOverrideProperty)?.let { urlOverride ->
         systemProperty(urlOverrideProperty, urlOverride)
     }
