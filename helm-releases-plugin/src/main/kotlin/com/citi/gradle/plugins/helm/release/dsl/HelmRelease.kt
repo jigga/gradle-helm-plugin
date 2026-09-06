@@ -521,6 +521,7 @@ private abstract class AbstractHelmRelease(
 
 
     @Suppress("OverridingDeprecatedMember")
+    @Deprecated(message = "use release tags instead")
     final override val dependsOn: SetProperty<String> =
         project.objects.setProperty()
 

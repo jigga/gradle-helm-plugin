@@ -17,7 +17,7 @@ jobs:
       matrix:
         # Mac OS and Windows are turned off: https://github.com/Citi/gradle-helm-plugin/issues/5
         os: [ ubuntu-latest ]
-        jdk: [ 8, 11, 17 ]
+        jdk: [ 17, 21 ]
     runs-on: ${{ matrix.os }}
     steps:
       # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle#using-the-gradle-starter-workflow
@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       # https://github.com/marketplace/actions/setup-java-jdk
-      - name: Set up JDK 17
+      - name: Set up JDK ${{ matrix.jdk }}
         uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
         with:
           java-version: ${{ matrix.jdk }}
