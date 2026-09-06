@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Mac OS and Windows are turned off: https://github.com/Citi/gradle-helm-plugin/issues/5
+        # Mac OS and Windows are turned off: https://github.com/jigga/gradle-helm-plugin/issues/5
         os: [ ubuntu-latest ]
         jdk: [ 17, 21 ]
     runs-on: ${{ matrix.os }}

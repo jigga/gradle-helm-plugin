@@ -11,7 +11,7 @@ Steps:
 2. Receive API Key and Secret from the portal (please
    follow [the documentation](https://docs.gradle.org/current/userguide/publishing_gradle_plugins.html)) and add them into the project secrets.
 3. Run publication workflows:
-   1. Navigate to [Actions](https://github.com/Citi/gradle-helm-plugin/actions/workflows/) and locate
+   1. Navigate to [Actions](https://github.com/jigga/gradle-helm-plugin/actions/workflows/) and locate
    the [publish workflow](./.github/workflows/publish.yaml) and [publish documentation one](./.github/workflows/publish.yaml). GitHub
    documentation: https://docs.github.com/en/actions/using-workflows/manually-running-a-workflow
    2. Run both workflows
