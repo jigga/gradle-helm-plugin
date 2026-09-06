@@ -44,6 +44,5 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@ac2d340dc04d9e1113182899e983b5400c17cda1 # v3.5.0
         with:
-          cache-read-only: ${{ github.ref != 'refs/heads/master' || matrix.jdk != 17 }}
-          gradle-home-cache-cleanup: true
+          cache-read-only: true
           arguments: build --stacktrace --info
